@@ -36,7 +36,7 @@ function SearchResults(props) {
 }
 
 class Search extends React.PureComponent {
-	constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       inputVal: '',
@@ -53,7 +53,7 @@ class Search extends React.PureComponent {
 
   startSearch(e) {
     let component = this;
-	  e.preventDefault();
+    e.preventDefault();
 
     if (!this.state.inputVal) {
       this.setState({warning: SearchParams.warningText});
@@ -80,9 +80,7 @@ class Search extends React.PureComponent {
           <input className="searchInput" type="text" value={this.state.inputVal} onChange={this.updateInputVal} placeholder={SearchParams.defaultInputVal}/>
           <button className="btn btn-danger" onClick={this.startSearch}> SEARCH </button>
         </form>
-
         <p className="warning"> {this.state.warning} </p>
-
         <SearchResults searchResults={this.state.searchResults}/>
       </div>
     );
