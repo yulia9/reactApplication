@@ -1,43 +1,39 @@
 const path = require('path');
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
+  template: __dirname + '/src/index.html',
+  filename: 'index.html',
+  inject: 'body',
+});
 
 module.exports = {
-	context: path.resolve(__dirname, 'src'),
+  context: path.resolve(__dirname, 'src'),
   entry: {
-  	home: './init',
-  	styles: './home.scss'
+    index: './index'
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'build')
   },
   resolve: {
-  	extensions: ['.js']
+    extensions: ['.js']
   },
   watch: true,
   module: {
-  	rules: [{
-  		test: /\.scss$/,
-  		use: ExtractTextPlugin.extract({
-  			fallback: 'style-loader',
-  			use: ['css-loader', 'sass-loader']
-  		})
-  	}, {
-  		test: /\.jsx?$/,
-  		exclude: /node_modules/,
-  		use: {
-  			loader: 'babel-loader',
-  			options: {
-  				plugins: ['transform-react-jsx'],
-  				presets: ['env']
-  			}
-  		}
-  	}
+    rules: [
+      { test: /\.js?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: ['transform-react-jsx'],
+            presets: ['env', 'react']
+        	}
+        }
+      }
   	]
   },
   plugins: [
-  	new ExtractTextPlugin({ filename: 'style.css',
-  		allChunks: true })
+    HTMLWebpackPluginConfig
   ]
 };

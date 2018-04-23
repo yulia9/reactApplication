@@ -1,41 +1,13 @@
-const AppParams = {
-  title: 'netflixroulettes',
-  homepageUrl: '/',
-  searchTitle: 'FIND YOUR MOVIE'
-},
-SearchParams = {
+import React, { PureComponent } from 'react';
+import SearchResults from './SearchResults';
+
+const SearchParams = {
   defaultInputVal: 'Want to watch...',
   warningText: 'Fill in the search field, please!',
   urlSearchByTitle: 'http://react-cdp-api.herokuapp.com/movies?search=',
-}
+};
 
-// Components
-let Title = React.createElement(
-  "a",
-  {href: AppParams.homepageUrl},
-  AppParams.title
-);
-
-function Header() {
-  return (
-    <header>
-      <h2 className="headerTitle"> {Title} </h2>
-    </header>
-  )
-}
-
-function SearchResults(props) {
-  return (
-    <ul className="searchResults"> {props.searchResults.length ? props.searchResults.map(n => 
-      <li key={n.id}>
-        <h4> {n.title} </h4>
-        <p> {n.overview} </p>
-      </li>) : []} 
-    </ul>
-  )
-}
-
-class Search extends React.PureComponent {
+class Search extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -87,19 +59,4 @@ class Search extends React.PureComponent {
   }
 }
 
-class App extends React.Component {
-  constructor() {
-    super();
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <Header/>
-        <Search searchTitle={AppParams.searchTitle}/>
-      </div>
-    );
-  }
-}
-
-ReactDOM.render(<App/>, document.getElementById('app'));
+export default Search;
