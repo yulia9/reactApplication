@@ -4,9 +4,11 @@ const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
   template: __dirname + '/src/index.html',
   filename: 'index.html',
   inject: 'body',
+  hash: true
 });
 
 module.exports = {
+  mode: 'production',
   context: path.resolve(__dirname, 'src'),
   entry: {
     index: './index'
@@ -18,7 +20,7 @@ module.exports = {
   resolve: {
     extensions: ['.js']
   },
-  watch: true,
+  watch: false,
   module: {
     rules: [
       { test: /\.js?$/,
