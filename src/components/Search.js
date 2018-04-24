@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import SearchResults from './SearchResults';
+import { SearchResults } from './SearchResults';
 
 const SearchParams = {
   defaultInputVal: 'Want to watch...',
