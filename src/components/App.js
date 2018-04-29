@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import css from '../styles/main.css';
 import Header from './Header';
 import Search from './Search';
+import ErrorBoundary from './ErrorBoundary';
 
 const AppParams = {
   title: 'netflixroulettes',
@@ -15,8 +17,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header title={AppParams.title}/>
-        <Search searchTitle={AppParams.searchTitle}/>
+        <ErrorBoundary>
+          <Header title={AppParams.title} searchTitle={AppParams.searchTitle}/>
+          <Search/>
+        </ErrorBoundary>
       </div>
     );
   }

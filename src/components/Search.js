@@ -1,5 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { SearchResults } from './SearchResults';
+import ResultsCount from './ResultsCount';
+import Warning from './Warning';
+import Sort from './Sort';
+// import ErrorBoundary from './ErrorBoundary';
 
 const SearchParams = {
   defaultInputVal: 'Want to watch...',
@@ -7,7 +11,7 @@ const SearchParams = {
   urlSearchByTitle: 'http://react-cdp-api.herokuapp.com/movies?search=',
 };
 
-class Search extends PureComponent {
+class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +19,16 @@ class Search extends PureComponent {
       searchResults: [],
       warning: ''
     };
+    this.sortVals = [
+    {
+      jsonName: 'vote_count',
+      name: 'rating'
+    },
+    {
+      jsonName: 'release_date',
+      name:'release date'
+    }];
+
     this.updateInputVal = this.updateInputVal.bind(this);
     this.startSearch = this.startSearch.bind(this);
   }
@@ -40,20 +54,42 @@ class Search extends PureComponent {
         component.setState({inputVal: ''});
         return response.json();
     }).then(function(response) {
-      component.setState({searchResults: response.data});
+      let arr = [];
+      if (response && response.data) {
+        response.data.map((n, i) => {
+          let date = new Date(n.release_date).getFullYear();
+          arr.push(n);
+          arr[i].release_date = date;
+        })
+      }
+      component.setState({searchResults: arr});
     })
+  }
+
+  sortFilms(n) {
+    let arr = this.state.searchResults.sort((a, b) => {
+      return b[n] - a[n];
+    })
+    this.setState({searchResults: arr});
   }
 
   render() {
     return (
       <div>
-        <h4 className="searchTitle"> {this.props.searchTitle} </h4>
-        <form onSubmit={this.startSearch}>
+        <form className="searchForm" onSubmit={this.startSearch}>
           <input className="searchInput" type="text" value={this.state.inputVal} onChange={this.updateInputVal} placeholder={SearchParams.defaultInputVal}/>
           <button className="btn btn-danger" onClick={this.startSearch}> SEARCH </button>
         </form>
-        <p className="warning"> {this.state.warning} </p>
-        <SearchResults searchResults={this.state.searchResults}/>
+
+        <Warning message={this.state.warning}/>
+        <div className="sortContainer">
+          <ResultsCount count={this.state.searchResults.length}/>
+          <Sort show={!!this.state.searchResults.length}
+                sortFilms={this.sortFilms.bind(this)}
+                sortVals={this.sortVals}
+                />
+        </div>
+        <SearchResults results={this.state.searchResults}/>
       </div>
     );
   }
