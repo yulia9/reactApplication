@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class SortOptions extends Component {
+export default class RadioButtons extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +16,7 @@ export default class SortOptions extends Component {
 
   render() {
     return (
-      <form className="radioButtons">
+      <div className="radioButtons">
         { this.props.options.map((n,i) => 
           <label key={n.name.slice(0,2)}> {n.name}
           <input type="radio" 
@@ -30,7 +30,7 @@ export default class SortOptions extends Component {
           </label>
           )
          }
-      </form>
+      </div>
     )
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SortOptions from './SortOptions';
+import RadioButtons from './RadioButtons';
 
 export default class Sort extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ export default class Sort extends Component {
   render() {
     return this.props.show ?
     (<div className="sort">
-        <SortOptions name='sortMovies'
+        <RadioButtons name='sortMovies'
                      options={this.sortOptions}
                      inputChanged={this.inputChanged.bind(this)}/>
         <button className="btn" onClick={this.clickSort.bind(this)}> SORT </button>

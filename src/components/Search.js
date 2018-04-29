@@ -3,7 +3,7 @@ import { SearchResults } from './SearchResults';
 import ResultsCount from './ResultsCount';
 import Warning from './Warning';
 import Sort from './Sort';
-// import ErrorBoundary from './ErrorBoundary';
+import RadioButtons from './RadioButtons';
 
 const SearchParams = {
   defaultInputVal: 'Want to watch...',
@@ -22,11 +22,27 @@ class Search extends Component {
     this.sortVals = [
     {
       jsonName: 'vote_count',
-      name: 'rating'
+      name: 'rating',
+      checked: true
     },
     {
       jsonName: 'release_date',
       name:'release date'
+    }];
+
+    this.searchVals = [
+    {
+      jsonName: 'all',
+      name: 'all',
+      checked: true
+    },
+    {
+      jsonName: 'title',
+      name: 'title'
+    },
+    {
+      jsonName: 'genres',
+      name: 'genre'
     }];
 
     this.updateInputVal = this.updateInputVal.bind(this);
@@ -51,7 +67,6 @@ class Search extends Component {
 
     fetch(SearchParams.urlSearchByTitle + this.state.inputVal).
       then(function(response) {
-        component.setState({inputVal: ''});
         return response.json();
     }).then(function(response) {
       let arr = [];
@@ -62,7 +77,24 @@ class Search extends Component {
           arr[i].release_date = date;
         })
       }
+      
+      component.searchVals.map(n => {
+        if (!!n.checked && n.name === 'title') {
+          arr = arr.filter(n => {
+            return n.title.toLowerCase().indexOf(component.state.inputVal.toLowerCase()) > -1;
+            }
+          )
+        } else if (!!n.checked && n.name === 'genre') {
+            arr = arr.filter(n => {
+              let genres = n.genres.filter(g => 
+                g.toLowerCase().indexOf(component.state.inputVal.toLowerCase()) > -1);
+              return genres.length > 0;
+            })
+        }
+      })
       component.setState({searchResults: arr});
+      component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
+      component.setState({inputVal: ''});
     })
   }
 
@@ -73,12 +105,22 @@ class Search extends Component {
     this.setState({searchResults: arr});
   }
 
+  inputChanged(n) {
+    this.searchVals.map(l => {
+      l.name === n.name ? l.checked = true : l.checked = false;
+    })
+  }
+
   render() {
     return (
       <div>
         <form className="searchForm" onSubmit={this.startSearch}>
           <input className="searchInput" type="text" value={this.state.inputVal} onChange={this.updateInputVal} placeholder={SearchParams.defaultInputVal}/>
+          <RadioButtons name='searchOpts'
+             options={this.searchVals}
+             inputChanged={this.inputChanged.bind(this)}/>
           <button className="btn btn-danger" onClick={this.startSearch}> SEARCH </button>
+
         </form>
 
         <Warning message={this.state.warning}/>
