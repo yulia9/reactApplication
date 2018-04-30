@@ -1,6 +1,9 @@
 * {
   box-sizing: border-box;
 }
+#app {
+  min-width: 550px;
+}
 body {
   padding: 10px;
   animation: emersion 0.5s;
@@ -75,25 +78,28 @@ a:hover {
   height: 30px;
   margin-right: 15px;
 }
-.radioButtons input {
-  margin: 0 2px;
-}  
-.radioButtons {
-  margin: 10px 0;
-}
-.radioButtons label {
-  margin: 0 5px;
-  display: inline-flex;
-  align-items: center;
-  text-align: center;
-}
-.sort button {
-  height: 30px;
-  padding: 0 10px;
-  border-radius: 0;
-}
 .sort button:hover {
   border: 1px solid #d9534f;
+}
+.searchForm .radioButtons {
+  position: absolute;
+  top: 35px;
+  right: 70px;
+}
+.sort .radioButtons{
+  position: absolute;
+  top: 35px;
+  right: 200px;
+}
+.sort button {
+  position: absolute;
+  top: 5px;
+  right: 130px;
+}
+.searchForm button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
 }
 .moviesCount {
   color: #d9534f;
@@ -109,4 +115,82 @@ a:hover {
 @keyframes emersion {
   from {opacity: 0}
   to {opacity: 1}
+}
+
+//Switcher
+.switch-container { 
+  color: #757575; 
+  font-size: 16px;
+  width: 180px; 
+} 
+.switch-description { 
+  position: absolute; 
+  left: 50px; 
+  min-width: 50px; 
+} 
+.switch-description:hover, .switch-description:active {
+  color: #d9534f;
+  font-weight: bold;
+}
+.bgc-toggler { 
+  cursor: default; 
+  transition: all 0.3s ease-in-out; 
+} 
+.toggler { 
+  border: 1px solid lightgrey; 
+  border-radius: 50%; 
+  cursor: default; 
+} 
+.switch-label { 
+  left: 0; 
+  padding: 0; 
+  vertical-align: middle; 
+} 
+.switch-label input { 
+  display: none; 
+} 
+.switcher :first-child .bgc-toggler { 
+  position: relative; 
+  display: inline-block; 
+  width: 20px; 
+  height: 60px; 
+  background: #d9534f; 
+  border-radius: 50px; 
+} 
+.switcher :last-child, .switcher :nth-child(2) { 
+  position: absolute; 
+  background: none; 
+} 
+.switcher :nth-child(2) .switch-description { 
+  top: 20px; 
+} 
+.switcher :last-child .switch-description { 
+  top: 40px; 
+} 
+.switcher :first-child input:checked + .bgc-toggler > .toggler { 
+  top: 0; 
+  width: 20px; 
+  height: 20px; 
+  position: absolute; 
+  display: block; 
+  background: #fff; 
+  transition: all 0.3s ease-in-out; 
+} 
+.switcher :nth-child(2) input:checked + .bgc-toggler > .toggler { 
+  width: 20px; 
+  height: 20px; 
+  position: absolute; 
+  display: block; 
+  background: #fff; 
+  top: 20px; 
+  transition: all 0.3s ease-in-out; 
+} 
+.switcher :last-child input:checked + .bgc-toggler > .toggler { 
+  width: 20px; 
+  height: 20px; 
+  position: absolute; 
+  display: block; 
+  background: #fff; 
+  top: 40px; 
+  transition: all 0.3s ease-in-out; 
 }

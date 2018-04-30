@@ -21,13 +21,13 @@ class Search extends Component {
     };
     this.sortVals = [
     {
-      jsonName: 'vote_count',
-      name: 'rating',
+      jsonName: 'release_date',
+      name:'release date',
       checked: true
     },
     {
-      jsonName: 'release_date',
-      name:'release date'
+      jsonName: 'vote_count',
+      name: 'rating',
     }];
 
     this.searchVals = [
@@ -115,12 +115,11 @@ class Search extends Component {
     return (
       <div>
         <form className="searchForm" onSubmit={this.startSearch}>
-          <input className="searchInput" type="text" value={this.state.inputVal} onChange={this.updateInputVal} placeholder={SearchParams.defaultInputVal}/>
+          <button className="btn btn-danger" onClick={this.startSearch}> SEARCH BY </button>
           <RadioButtons name='searchOpts'
-             options={this.searchVals}
-             inputChanged={this.inputChanged.bind(this)}/>
-          <button className="btn btn-danger" onClick={this.startSearch}> SEARCH </button>
-
+            options={this.searchVals}
+            inputChanged={this.inputChanged.bind(this)}/>
+          <input className="searchInput" type="text" value={this.state.inputVal} onChange={this.updateInputVal} placeholder={SearchParams.defaultInputVal}/>
         </form>
 
         <Warning message={this.state.warning}/>

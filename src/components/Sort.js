@@ -32,10 +32,10 @@ export default class Sort extends Component {
   render() {
     return this.props.show ?
     (<div className="sort">
-        <RadioButtons name='sortMovies'
-                     options={this.sortOptions}
-                     inputChanged={this.inputChanged.bind(this)}/>
-        <button className="btn" onClick={this.clickSort.bind(this)}> SORT </button>
+      <button className="btn" onClick={this.clickSort.bind(this)}> SORT BY </button>
+      <RadioButtons name='sortMovies'
+                   options={this.sortOptions}
+                   inputChanged={this.inputChanged.bind(this)}/>
     </div>) :
     null;
   }
