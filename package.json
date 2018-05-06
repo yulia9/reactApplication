@@ -8,6 +8,10 @@
     "prod": "webpack --config webpack.prod.js",
     "start": "webpack-dev-server --open --config webpack.dev.js"
   },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

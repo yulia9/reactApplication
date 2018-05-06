@@ -13,10 +13,4 @@ export function SearchResults(props) {
       </li>) : []} 
     </ul>
   )
-
-  function makeString (arr) {
-    return arr.length && arr.length > 1 ? 
-      arr.reduce((a,b) => `${a} & ${b}`) :
-      (arr.length[0] || '')
-  }
 }
