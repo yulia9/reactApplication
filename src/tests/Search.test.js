@@ -8,6 +8,11 @@ Enzyme.configure({adapter: new Adapter()});
 import Search from '../components/Search';
 
 let search;
+let response;
+
+let event = {
+  preventDefault: jest.fn()
+};
 
 describe('Search', () => {
   beforeEach(() => {
@@ -15,7 +20,37 @@ describe('Search', () => {
     search.instance().state = {
       searchResults: [],
       inputVal: ''
-    }
+    };
+
+    response = {
+      data: [
+        {
+          "title": "Test title1",
+          "vote_count": 5,
+          "release_date": "2018-02-07",
+          "genres": [ "Drama","Romance"]
+        },
+        {
+          "title": "Test title2",
+          "vote_count": 10,
+          "release_date": "2016-02-16",
+          "genres": [ "Action","Romance"]
+        },
+      ]
+    };
+
+    window.fetch = jest.fn().mockImplementation(() => {
+      var p = new Promise((resolve, reject) => {
+        resolve({
+          json: function() {
+            return response;
+          }
+        });
+      });
+
+      return p;
+    });
+
   });
 
   test('Should change checked property', () => {
@@ -67,32 +102,79 @@ describe('Search', () => {
     expect(search.instance().state.inputVal).toEqual(event.target.value);
   });
 
-  test('Should make a request and write received data', () => {
-    let event = {
-      preventDefault: jest.fn()
-    };
+  test('Should make a request for searching by GENRE and save result array',() => {
+    let expectedArray = [
+      {
+        title: 'Test title1',
+        vote_count: 5,
+        release_date: 2018,
+        genres: [ 'Drama', 'Romance' ]
+      }
+    ];
 
-    let response = {
-      data: [
-        {
-        "id": 555,
-        "title": "Test title",
-        "vote_average": 555,
-        "vote_count": 111,
-        "release_date": "2018-02-07",
-        "poster_path": "https://facebook.github.io/jest/",
-        "overview": "Test overview",
-        "genres": [ "Drama","Romance"]
-        }
-    ]};
-    window.fetch = jest.fn().mockImplementation(() =>
-    Promise.resolve(response));
-    
+    search.instance().searchVals = [
+      {
+        jsonName: 'all',
+        name: 'all',
+      },
+      {
+        jsonName: 'title',
+        name: 'title'
+      },
+      {
+        jsonName: 'genres',
+        name: 'genre',
+        checked: true
+      }];
+
     search.instance().sortFilms = jest.fn();
-    search.instance().state.inputVal = 'test';
-    search.instance().startSearch(event);
-    console.log(search.instance().state.searchResults)
-    
+    search.instance().state.inputVal = 'Drama';
+
+
+    return search.instance().startSearch(event).
+      then(()=> {
+        expect(search.instance().state.searchResults).toEqual(expectedArray);
+      });
+  });
+
+  test('Should make a request for searching by TITLE and save result array',() => {
+    let expectedArray = [
+      {
+        "title": "Test title1",
+        "vote_count": 5,
+        "release_date": 2018,
+        "genres": [ "Drama","Romance"]
+      },
+      {
+        "title": "Test title2",
+        "vote_count": 10,
+        "release_date": 2016,
+        "genres": [ "Action","Romance"]
+      },
+    ];
+
+    search.instance().searchVals = [
+      {
+        jsonName: 'all',
+        name: 'all',
+      },
+      {
+        jsonName: 'title',
+        name: 'title',
+        checked: true
+      },
+      {
+        jsonName: 'genres',
+        name: 'genre',
+      }];
+
+    search.instance().sortFilms = jest.fn();
+    search.instance().state.inputVal = 'Test';
+
+    return search.instance().startSearch(event).
+      then(()=> {
+        expect(search.instance().state.searchResults).toEqual(expectedArray);
+      });
   });
 
   test('Should render template correctly', () => {

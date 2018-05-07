@@ -62,40 +62,42 @@ class Search extends Component {
       component.setState({searchResults: []});
       return;
     } else {
-       this.setState({warning:''});
+      this.setState({warning:''});
     }
 
-    fetch(SearchParams.urlSearchByTitle + this.state.inputVal).
+    return fetch(SearchParams.urlSearchByTitle + this.state.inputVal).
       then(function(response) {
         return response.json();
-    }).then(function(response) {
-      let arr = [];
-      if (response && response.data) {
-        response.data.map((n, i) => {
-          let date = new Date(n.release_date).getFullYear();
-          arr.push(n);
-          arr[i].release_date = date;
-        })
-      }
-      
-      component.searchVals.map(n => {
-        if (!!n.checked && n.name === 'title') {
-          arr = arr.filter(n => {
-            return n.title.toLowerCase().indexOf(component.state.inputVal.toLowerCase()) > -1;
-            }
-          )
-        } else if (!!n.checked && n.name === 'genre') {
+      }).
+      then(function(response) {
+        let arr = [];
+        if (response && response.data) {
+          response.data.map((n, i) => {
+            let date = new Date(n.release_date).getFullYear();
+            arr.push(n);
+            arr[i].release_date = date;
+          })
+        }
+
+        component.searchVals.map(n => {
+          if (!!n.checked && n.name === 'title') {
             arr = arr.filter(n => {
-              let genres = n.genres.filter(g => 
+                return n.title.toLowerCase().indexOf(component.state.inputVal.toLowerCase()) > -1;
+              }
+            )
+          } else if (!!n.checked && n.name === 'genre') {
+            arr = arr.filter(n => {
+              let genres = n.genres.filter(g =>
                 g.toLowerCase().indexOf(component.state.inputVal.toLowerCase()) > -1);
               return genres.length > 0;
             })
-        }
+          }
+        })
+        component.setState({searchResults: arr});
+        component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
+        component.setState({inputVal: ''});
       })
-      component.setState({searchResults: arr});
-      component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
-      component.setState({inputVal: ''});
-    })
+
   }
 
   sortFilms(n) {
