@@ -1,0 +1,9 @@
+
+//Ignore this folders
+node_modules
+dist
+coverage
+.idea
+build
+src/tests/__snapshots__
+
