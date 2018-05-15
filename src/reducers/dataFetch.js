@@ -1,5 +1,5 @@
-import { FETCH_STATES, DATA_UPDATES } from '../actions';
-
+import { DATA_UPDATES } from '../actions/dataActions';
+import { FETCH_STATES } from '../actions/fetchActions';
 
 const initialState = {
   data: [],

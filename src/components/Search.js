@@ -5,8 +5,8 @@ import ResultsCount from './ResultsCount';
 import Warning from './Warning';
 import Sort from './Sort';
 import RadioButtons from './RadioButtons';
-import { fetchData, updateData, filterData } from '../actions';
-import { store } from '../index';
+import { updateData, filterData, sortData } from '../actions/dataActions';
+import { fetchData } from '../actions/fetchActions';
 
 const SearchParams = {
   defaultInputVal: 'Want to watch...',
@@ -86,19 +86,13 @@ class Search extends Component {
             component.dispatch(filterData(component.props.data, n.name, component.state.inputVal.toLowerCase()));
           } 
         })
-
-        // component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
+        component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
         component.setState({inputVal: ''});
       })
-
-
   }
 
   sortFilms(n) {
-    let arr = this.props.data.sort((a, b) => {
-      return b[n] - a[n];
-    })
-    this.dispatch(updateData(arr));
+    this.dispatch(sortData(this.props.data, n));
   }
 
   inputChanged(n) {
@@ -108,9 +102,6 @@ class Search extends Component {
   }
 
   render() {
-    if (this.props.loading) {
-      return <div>Loading...</div>;
-    }
     return (
       <div>
         <form className="searchForm" onSubmit={this.startSearch}>
