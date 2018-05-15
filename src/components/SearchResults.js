@@ -8,15 +8,9 @@ export function SearchResults(props) {
   }
   return (
     <ul className="searchResults"> {props.results.length ? props.results.map(n => 
-      <li key={n.id}>
+      <li className="movieBlock" key={n.id}>
         <Movie data={n} imgParams={params}></Movie>
       </li>) : []} 
     </ul>
   )
-
-  function makeString (arr) {
-    return arr.length && arr.length > 1 ? 
-      arr.reduce((a,b) => `${a} & ${b}`) :
-      (arr.length[0] || '')
-  }
 }

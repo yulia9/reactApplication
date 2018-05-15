@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { SearchResults } from './SearchResults';
 import ResultsCount from './ResultsCount';
 import Warning from './Warning';
 import Sort from './Sort';
 import RadioButtons from './RadioButtons';
+import { fetchData, updateData, filterData } from '../actions';
+import { store } from '../index';
 
 const SearchParams = {
   defaultInputVal: 'Want to watch...',
@@ -12,11 +15,10 @@ const SearchParams = {
 };
 
 class Search extends Component {
-  constructor(props) {
+  constructor({props, dispatch}) {
     super(props);
     this.state = {
       inputVal: '',
-      searchResults: [],
       warning: ''
     };
     this.sortVals = [
@@ -47,6 +49,7 @@ class Search extends Component {
 
     this.updateInputVal = this.updateInputVal.bind(this);
     this.startSearch = this.startSearch.bind(this);
+    this.dispatch = dispatch;
   }
 
   updateInputVal(e) {
@@ -59,50 +62,43 @@ class Search extends Component {
 
     if (!this.state.inputVal) {
       this.setState({warning: SearchParams.warningText});
-      component.setState({searchResults: []});
+      component.dispatch(updateData([]));
       return;
     } else {
-       this.setState({warning:''});
+      this.setState({warning:''});
     }
 
-    fetch(SearchParams.urlSearchByTitle + this.state.inputVal).
-      then(function(response) {
-        return response.json();
-    }).then(function(response) {
-      let arr = [];
-      if (response && response.data) {
-        response.data.map((n, i) => {
-          let date = new Date(n.release_date).getFullYear();
-          arr.push(n);
-          arr[i].release_date = date;
-        })
-      }
-      
-      component.searchVals.map(n => {
-        if (!!n.checked && n.name === 'title') {
-          arr = arr.filter(n => {
-            return n.title.toLowerCase().indexOf(component.state.inputVal.toLowerCase()) > -1;
-            }
-          )
-        } else if (!!n.checked && n.name === 'genre') {
-            arr = arr.filter(n => {
-              let genres = n.genres.filter(g => 
-                g.toLowerCase().indexOf(component.state.inputVal.toLowerCase()) > -1);
-              return genres.length > 0;
-            })
+    component.dispatch(fetchData(SearchParams.urlSearchByTitle + this.state.inputVal))
+      .then(function(response) {
+
+        let arr = [];
+        if (response) {
+          response.map((n, i) => {
+            let date = new Date(n.release_date).getFullYear();
+            arr.push(n);
+            arr[i].release_date = date;
+          })
         }
+        component.dispatch(updateData(arr));
+
+        component.searchVals.map(n => {
+          if (!!n.checked && n.name !== 'all') {
+            component.dispatch(filterData(component.props.data, n.name, component.state.inputVal.toLowerCase()));
+          } 
+        })
+
+        // component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
+        component.setState({inputVal: ''});
       })
-      component.setState({searchResults: arr});
-      component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
-      component.setState({inputVal: ''});
-    })
+
+
   }
 
   sortFilms(n) {
-    let arr = this.state.searchResults.sort((a, b) => {
+    let arr = this.props.data.sort((a, b) => {
       return b[n] - a[n];
     })
-    this.setState({searchResults: arr});
+    this.dispatch(updateData(arr));
   }
 
   inputChanged(n) {
@@ -112,6 +108,9 @@ class Search extends Component {
   }
 
   render() {
+    if (this.props.loading) {
+      return <div>Loading...</div>;
+    }
     return (
       <div>
         <form className="searchForm" onSubmit={this.startSearch}>
@@ -124,16 +123,34 @@ class Search extends Component {
 
         <Warning message={this.state.warning}/>
         <div className="sortContainer">
-          <ResultsCount count={this.state.searchResults.length}/>
-          <Sort show={!!this.state.searchResults.length}
+          <ResultsCount count={this.props.data.length}/>
+          <Sort show={!!this.props.data.length}
                 sortFilms={this.sortFilms.bind(this)}
                 sortVals={this.sortVals}
                 />
         </div>
-        <SearchResults results={this.state.searchResults}/>
+        <SearchResults results={this.props.data}/>
       </div>
     );
   }
-}
+};
 
-export default Search;
+function mapStateToProps(state) {
+  console.log('****state', state);
+  let props = Array.isArray(state.dataFetch) ?
+    {
+      data: state.dataFetch[state.dataFetch.length-1].data || [],
+      loading: state.dataFetch[state.dataFetch.length-1].loading || false,
+      error: state.dataFetch[state.dataFetch.length-1].error || null
+    } :
+    {
+      data: state.dataFetch.data,
+      loading: state.dataFetch.loading,
+      error: state.dataFetch.error
+    };
+    
+    return props;
+} 
+
+
+export default connect(mapStateToProps)(Search);
