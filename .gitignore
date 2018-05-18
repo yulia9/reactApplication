@@ -1,6 +1,9 @@
+//Ignore this folders
+
 node_modules
 dist
 coverage
 .idea
-src/tests/__snapshots__/
-build/
+build
+src/tests/__snapshots__
+
