@@ -1,3 +1,5 @@
+import { storage } from '../storage';
+
 export const DATA_UPDATES = {
   DATA_UPDATE: 'DATA_UPDATE',
   DATA_SORT: 'DATA_SORT',
@@ -5,6 +7,8 @@ export const DATA_UPDATES = {
 };
 
 export function updateData(data) {
+  storage.set(data);
+
   return {
   	type: DATA_UPDATES.DATA_UPDATE,
     data: data
@@ -29,7 +33,7 @@ export function filterData(data, filterBy, searchText) {
       return genres.length > 0;
     })
   }
-
+  storage.set(data);
   return {
   	type: DATA_UPDATES.DATA_FILTER,
     data: arr
@@ -40,7 +44,6 @@ export function sortData(data, sortBy) {
   let arr = data.sort((a, b) => {
   	return b[sortBy] - a[sortBy];	
   })
-  updateData([]);
 
   return updateData(arr);
 }

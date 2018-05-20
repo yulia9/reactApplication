@@ -23,7 +23,11 @@ describe('Redux: Data actions', () => {
         "release_date": "2016-02-16",
         "genres": [ "Action","Romance"]
       },
-    ]
+    ];
+
+    window.localStorage = {
+      setItem: jest.fn(),
+    }
   })
 
   test('Should update data in the store', () => {

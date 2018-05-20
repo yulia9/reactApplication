@@ -1,8 +1,9 @@
 import { DATA_UPDATES } from '../actions/dataActions';
 import { FETCH_STATES } from '../actions/fetchActions';
+import { storage } from '../storage';
 
 const initialState = {
-  data: [],
+  data: storage.get(),
   loading: false,
   error: null
 };

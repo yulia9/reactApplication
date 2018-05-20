@@ -51,9 +51,10 @@ class Search extends Component {
     this.startSearch = this.startSearch.bind(this);
     this.dispatch = dispatch;
   }
-
+  
   updateInputVal(e) {
     this.setState({inputVal: e.target.value});
+    return this.state.inputVal;
   }
 
   startSearch(e) {
@@ -92,7 +93,9 @@ class Search extends Component {
   }
 
   sortFilms(n) {
-    this.dispatch(sortData(this.props.data, n));
+    let data = this.props.data;
+    this.dispatch(updateData([]));
+    this.dispatch(sortData(data, n));
   }
 
   inputChanged(n) {
@@ -127,7 +130,6 @@ class Search extends Component {
 };
 
 function mapStateToProps(state) {
-  console.log('****state', state);
   let props = Array.isArray(state.dataFetch) ?
     {
       data: state.dataFetch[state.dataFetch.length-1].data || [],

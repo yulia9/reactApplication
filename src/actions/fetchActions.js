@@ -1,3 +1,5 @@
+import { storage } from '../storage';
+
 export const FETCH_STATES = {
   FETCH_BEGIN: 'FETCH_BEGIN',
   FETCH_SUCCESS: 'FETCH_SUCCESS',
@@ -26,10 +28,14 @@ export function fetchData(url) {
       .then(response => {
         return response.json()})
       .then(response => {
+        storage.set(response.data);
         dispatch(fetchSuccess(response.data));
         return response.data;
       })
-      .catch(error => dispatch(fetchFailure(error)));
+      .catch(error => {
+        storage.set([]);
+        dispatch(fetchError(error))
+      });
   }
 }
 
