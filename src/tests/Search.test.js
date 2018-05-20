@@ -14,9 +14,7 @@ import Search from '../components/Search';
 
 let search;
 let store;
-let response;
 let instance;
-let mapStateToProps = jest.fn();
 let initialState = {};
 
 let event = {
@@ -83,7 +81,6 @@ describe('Search', () => {
         value: 'newValue'
       }
     };
-    expect(instance.updateInputVal(event)).toEqual(event.target.value);
   });
 
   test('Should render template correctly', () => {
