@@ -11,8 +11,8 @@ const AppParams = {
 };
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
   render() {
     return (
@@ -21,6 +21,7 @@ class App extends Component {
           <Header title={AppParams.title} searchTitle={AppParams.searchTitle}/>
           <Search/>
         </ErrorBoundary>
+        { this.props.children }
       </div>
     );
   }
