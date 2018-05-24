@@ -20,16 +20,19 @@ export const store = createStore(rootReducer, applyMiddleware(thunk));
 
 
 import PageNotFound from './components/PageNotFound';
-import Movie from './components/Movie';
+import Search from './components/Search';
+import Header from './components/Header';
 
 ReactDOM.render((
   <Provider store={store}>
     <Router>
-      <div>
-        <Route path="/" component={App}/>
-    	  <Route path="/movie" component={Movie} />
-    	  <Route path="/*" component={PageNotFound} />
-      </div>
+        <App>
+          <Switch>
+          <Route exact path="/" component={Header} />
+      	  <Route exact path="/" component={Search} />
+      	  <Route path="*" component={PageNotFound} />
+          </Switch>
+        </App>
     </Router>
   </Provider>
   ), document.getElementById('app')
