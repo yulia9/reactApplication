@@ -107,6 +107,7 @@ class Search extends Component {
   render() {
     return (
       <div>
+      <h4> FIND YOUR MOVIE </h4>
         <form className="searchForm" onSubmit={this.startSearch}>
           <button className="btn btn-danger" onClick={this.startSearch}> SEARCH BY </button>
           <RadioButtons name='searchOpts'
@@ -124,6 +125,8 @@ class Search extends Component {
                 />
         </div>
         <SearchResults results={this.props.data}/>
+
+        { this.props.children }
       </div>
     );
   }

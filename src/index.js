@@ -10,29 +10,22 @@ import App from './components/App';
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 
-// ReactDOM.render(
-//   <Provider store={store}>
-//     <App />
-//   </Provider>,
-//   document.getElementById('app')
-// );
-
-
-
 import PageNotFound from './components/PageNotFound';
 import Search from './components/Search';
 import Header from './components/Header';
+import FilmPage from './components/FilmPage'; 
+
 
 ReactDOM.render((
   <Provider store={store}>
-    <Router>
-        <App>
-          <Switch>
-          <Route exact path="/" component={Header} />
-      	  <Route exact path="/" component={Search} />
-      	  <Route path="*" component={PageNotFound} />
-          </Switch>
-        </App>
+    <Router>       
+      <App>
+      <Switch>
+          <Route exact path="/" component={Search}/>
+          <Route path="/movie/:id" component={FilmPage} />
+          <Route path="*" component={PageNotFound} />
+        </Switch>
+      </App>
     </Router>
   </Provider>
   ), document.getElementById('app')
