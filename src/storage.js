@@ -6,9 +6,9 @@ export let storage = {
   },
   get () {
   	let data = [];
-    if (window.localStorage && window.localStorage[storageId]) {
-      data =  JSON.parse(window.localStorage[storageId]);
-    }
+    // if (window.localStorage && window.localStorage[storageId]) {
+    //   data =  JSON.parse(window.localStorage[storageId]);
+    // }
     return data;
   }
 };
