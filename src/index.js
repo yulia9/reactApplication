@@ -14,14 +14,20 @@ import PageNotFound from './components/PageNotFound';
 import Search from './components/Search';
 import Header from './components/Header';
 import FilmPage from './components/FilmPage'; 
+import { SearchResults } from './components/SearchResults'; 
 
 
 ReactDOM.render((
   <Provider store={store}>
     <Router>       
       <App>
-      <Switch>
-          <Route exact path="/" component={Search}/>
+        <Switch>
+          <Route exact path="/" component={Search} />
+          <Route path="/search">
+            <Search>
+              <Route component={SearchResults}/>
+            </Search>
+          </Route>
           <Route path="/movie/:id" component={FilmPage} />
           <Route path="*" component={PageNotFound} />
         </Switch>

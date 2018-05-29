@@ -2,7 +2,9 @@ import React from 'react';
 import { Movie } from './Movie';
 import Warning from './Warning';
 import { store } from '../index';
+import { Link } from 'react-router-dom';
 import { SearchResults } from './SearchResults';
+import { updateData } from '../actions/dataActions';
 
 
 export default function(props) {
@@ -11,20 +13,19 @@ export default function(props) {
     height: 'auto',
   };
 
-  function showResults() {
-      if (store.getState().dataFetch.length > 0) {
-          return (
-              <SearchResults results={store.getState().dataFetch[store.getState().dataFetch.length-1].data}/>
-          )
-      }
+  function updateStore(arr) {
+    store.dispatch(updateData(arr));
   }
 
   if (props.location.state && props.location.state.movie) {
     return (
       <div>
+        <Link to={{pathname: `/`}}>
+          <button onClick={updateStore([])} className="filmPageSearch btn btn-danger"> SEARCH </button>
+        </Link>
         <Movie description={props.location.state.movie.overview} data={props.location.state.movie} imgParams={params}/>
         <hr/>
-        {showResults()}
+        <SearchResults/>
       </div>
     )
   } else {

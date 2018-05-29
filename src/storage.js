@@ -1,14 +1,15 @@
-let storageId = 'movies';
 
 export let storage = {
-  set (data) {
-    window.localStorage.setItem(storageId, JSON.stringify(data));
+  set (data, localStorageId) {
+    if (localStorageId) {
+      window.localStorage.setItem(localStorageId, JSON.stringify(data));
+    }
   },
-  get () {
+  get (storageId) {
   	let data = [];
-    // if (window.localStorage && window.localStorage[storageId]) {
-    //   data =  JSON.parse(window.localStorage[storageId]);
-    // }
+    if (window.localStorage && window.localStorage[storageId]) {
+      data = JSON.parse(window.localStorage[storageId]);
+    }
     return data;
   }
 };

@@ -7,6 +7,7 @@ import Sort from './Sort';
 import RadioButtons from './RadioButtons';
 import { updateData, filterData, sortData } from '../actions/dataActions';
 import { fetchData } from '../actions/fetchActions';
+import { withRouter } from 'react-router';
 
 const SearchParams = {
   defaultInputVal: 'Want to watch...',
@@ -15,7 +16,7 @@ const SearchParams = {
 };
 
 class Search extends Component {
-  constructor({props, dispatch}) {
+  constructor({props}) {
     super(props);
     this.state = {
       inputVal: '',
@@ -49,7 +50,6 @@ class Search extends Component {
 
     this.updateInputVal = this.updateInputVal.bind(this);
     this.startSearch = this.startSearch.bind(this);
-    this.dispatch = dispatch;
   }
   
   updateInputVal(e) {
@@ -57,19 +57,21 @@ class Search extends Component {
     return this.state.inputVal;
   }
 
-  startSearch(e) {
+  startSearch(e, history) {
+    this.storageId = Date.now();
+
     let component = this;
     e.preventDefault();
 
     if (!this.state.inputVal) {
       this.setState({warning: SearchParams.warningText});
-      component.dispatch(updateData([]));
+      component.props.dispatch(updateData([]));
       return;
     } else {
       this.setState({warning:''});
     }
 
-    component.dispatch(fetchData(SearchParams.urlSearchByTitle + this.state.inputVal))
+    component.props.dispatch(fetchData(SearchParams.urlSearchByTitle + this.state.inputVal))
       .then(function(response) {
 
         let arr = [];
@@ -80,11 +82,11 @@ class Search extends Component {
             arr[i].release_date = date;
           })
         }
-        component.dispatch(updateData(arr));
+        component.props.dispatch(updateData(arr));
 
         component.searchVals.map(n => {
           if (!!n.checked && n.name !== 'all') {
-            component.dispatch(filterData(component.props.data, n.name, component.state.inputVal.toLowerCase()));
+            component.props.dispatch(filterData(component.props.data, n.name, component.state.inputVal.toLowerCase()));
           } 
         })
         component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
@@ -94,8 +96,10 @@ class Search extends Component {
 
   sortFilms(n) {
     let data = this.props.data;
-    this.dispatch(updateData([]));
-    this.dispatch(sortData(data, n));
+    let storageId = window.encodeURIComponent(`Search=${Date.now()}Query`);
+    this.props.dispatch(updateData([]));
+    this.props.dispatch(sortData(data, n, storageId));
+    this.props.history.push(`/search?${storageId}`);
   }
 
   inputChanged(n) {
@@ -115,7 +119,7 @@ class Search extends Component {
             inputChanged={this.inputChanged.bind(this)}/>
           <input className="searchInput" type="text" value={this.state.inputVal} onChange={this.updateInputVal} placeholder={SearchParams.defaultInputVal}/>
         </form>
-
+     
         <Warning message={this.state.warning}/>
         <div className="sortContainer">
           <ResultsCount count={this.props.data.length}/>
@@ -124,7 +128,6 @@ class Search extends Component {
                 sortVals={this.sortVals}
                 />
         </div>
-        <SearchResults results={this.props.data}/>
 
         { this.props.children }
       </div>
@@ -149,4 +152,4 @@ function mapStateToProps(state) {
 } 
 
 
-export default connect(mapStateToProps)(Search);
+export default withRouter(connect(mapStateToProps)(Search));
