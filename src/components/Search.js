@@ -136,19 +136,7 @@ class Search extends Component {
 };
 
 function mapStateToProps(state) {
-  let props = Array.isArray(state.dataFetch) ?
-    {
-      data: state.dataFetch[state.dataFetch.length-1].data || [],
-      loading: state.dataFetch[state.dataFetch.length-1].loading || false,
-      error: state.dataFetch[state.dataFetch.length-1].error || null
-    } :
-    {
-      data: state.dataFetch.data,
-      loading: state.dataFetch.loading,
-      error: state.dataFetch.error
-    };
-    
-    return props;
+  return state.dataFetch;
 } 
 
 

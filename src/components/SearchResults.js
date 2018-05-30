@@ -12,8 +12,7 @@ export function SearchResults(props) {
     height: 'auto',
   }
 
-  let results = store.getState().dataFetch.length > 0 ? 
-  store.getState().dataFetch[store.getState().dataFetch.length-1].data : [];
+  let results = store.getState().dataFetch.data;
   
   let storageId = props.location && props.location.search ? 
   props.location.search.slice(1) : '';

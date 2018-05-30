@@ -13,15 +13,15 @@ export default function(props) {
     height: 'auto',
   };
 
-  function updateStore(arr) {
-    store.dispatch(updateData(arr));
+  function updateStore() {
+    store.dispatch(updateData([]));
   }
 
   if (props.location.state && props.location.state.movie) {
     return (
       <div>
         <Link to={{pathname: `/`}}>
-          <button onClick={updateStore([])} className="filmPageSearch btn btn-danger"> SEARCH </button>
+          <button onClick={updateStore} className="filmPageSearch btn btn-danger"> SEARCH </button>
         </Link>
         <Movie description={props.location.state.movie.overview} data={props.location.state.movie} imgParams={params}/>
         <hr/>
