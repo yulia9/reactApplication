@@ -8,19 +8,16 @@ const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
 
 module.exports = {
     mode: 'development',
-    context: path.resolve(__dirname, 'src'),
-    entry: {
-        index: './index'
-    },
+    entry: path.resolve(__dirname, 'src/index.js'),
     output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, 'build'),
+        filename: 'bundle.js',
+        path: path.resolve('./build/js'),
         publicPath: '/'
     },
     resolve: {
-        extensions: ['.js']
+        extensions: ['.js', '.jsx']
     },
-    watch: true,
+    watch: false,
     module: {
         rules: [
             { test: /\.js?$/,
@@ -33,15 +30,18 @@ module.exports = {
                     }
                 }
             },
+            { test: /\.jsx?$/,
+                use: 'babel-loader'
+            },
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
             }
         ]
     },
-    plugins: [
-        HTMLWebpackPluginConfig
-    ],
+    // plugins: [
+    //     HTMLWebpackPluginConfig
+    // ],
     devServer: {
         inline: true,
         historyApiFallback: true

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import css from '../styles/main.css';
+// import '../styles/main.css';
 import Header from './Header';
 import Search from './Search';
 import ErrorBoundary from './ErrorBoundary';
