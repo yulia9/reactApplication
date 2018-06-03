@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from './Image';
 
-export function Movie({imgParams, data}) {
+export function Movie({imgParams, data, description}) {
   return (
     <div>
       <Image width={imgParams.width}
@@ -12,6 +12,7 @@ export function Movie({imgParams, data}) {
       <span className="searchInfo"> rating: <span> {data.vote_count} </span></span>
       <span className="searchInfo"> release date: <span>{data.release_date} </span></span>
       <p>{makeString(data.genres)}</p>
+      <p> {description} </p>
     </div>
   )
 

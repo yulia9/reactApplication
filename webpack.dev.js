@@ -14,7 +14,8 @@ module.exports = {
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'build')
+        path: path.resolve(__dirname, 'build'),
+        publicPath: '/'
     },
     resolve: {
         extensions: ['.js']
@@ -40,6 +41,10 @@ module.exports = {
     },
     plugins: [
         HTMLWebpackPluginConfig
-    ]
+    ],
+    devServer: {
+        inline: true,
+        historyApiFallback: true
+    },
 };
 
