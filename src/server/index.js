@@ -9,7 +9,7 @@ const port = 8000;
 const assets = express.static('build')
 
 server.use(assets);
-server.get('/*', handleRender)
+server.get('*', handleRender)
 
 server.listen(port, function() {
   console.log(`Server started on port ${port}`);

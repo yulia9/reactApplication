@@ -2,8 +2,13 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { configureStore } from '../index';
+import { configureStore, Routers } from '../index';
 import App from '../components/App';
+import Header from '../components/Header';
+import Search from '../components/Search';
+import PageNotFound from '../components/PageNotFound';
+import { SearchResults } from '../components/SearchResults';
+
 
 function renderPage (html, preloadedState) {
   return `
@@ -31,7 +36,7 @@ function handleRender (req, res) {
   const app = (
     <Provider store={store}>
       <StaticRouter location={req.url} context={context}>
-        <App/>
+        <Routers/>
       </StaticRouter>
     </Provider>
   );

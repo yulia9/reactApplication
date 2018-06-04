@@ -11,9 +11,10 @@ const fetchBegin = () => ({
   data: []
 });
 
-const fetchSuccess = data => ({
+const fetchSuccess = (data, oneMovie) => ({
   type: FETCH_STATES.FETCH_SUCCESS,
-  data: { data }
+  data: !oneMovie ? { data } : '',
+  movie: oneMovie ? { data } : ''
 });
 
 const fetchError = error => ({
@@ -21,19 +22,22 @@ const fetchError = error => ({
   error: { error }
 });
 
-export function fetchData(url) {
+export function fetchData(url, oneMovie) {
   return function (dispatch) {
     dispatch(fetchBegin());
     return fetch(url)
       .then(response => {
         return response.json()})
       .then(response => {
-        storage.set(response.data);
-        dispatch(fetchSuccess(response.data));
-        return response.data;
+        if (oneMovie) {
+          dispatch(fetchSuccess(response, oneMovie));
+          return response;
+        } else {
+          dispatch(fetchSuccess(response.data));
+          return response.data;
+        }
       })
       .catch(error => {
-        storage.set([]);
         dispatch(fetchError(error))
       });
   }

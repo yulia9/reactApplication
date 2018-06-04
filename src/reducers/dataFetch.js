@@ -13,13 +13,15 @@ const data = (state = initialState, action) => {
     case FETCH_STATES.FETCH_BEGIN:
       return Object.assign({}, state, {
           data: [],
-          loading: true
+          loading: true,
+          movie: {}
         })
       
     case FETCH_STATES.FETCH_SUCCESS:
       return Object.assign({}, state, {
           data: action.data,
-          loading: false
+          loading: false,
+          movie: action.movie.data
         })
     case FETCH_STATES.FETCH_FAILURE:
       return Object.assign({}, state, {

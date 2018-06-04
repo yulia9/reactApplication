@@ -18,6 +18,23 @@ import FilmPage from './components/FilmPage';
 import { SearchResults } from './components/SearchResults'; 
 let store = {};
 
+export let Routers  = () => {
+  return (
+    <App>
+      <Switch>
+        <Route exact path="/" component={Search} />
+        <Route path="/search">
+          <Search>
+            <Route component={SearchResults}/>
+          </Search>
+        </Route>
+        <Route path="/movies/:id" component={FilmPage} />
+        <Route path="*" component={PageNotFound} />
+      </Switch>
+    </App>
+  )
+}
+
 // Prevent this part from working when is running
 if (typeof window !== 'undefined') {
   store = configureStore(window.PRELOADED_STATE);
@@ -26,18 +43,7 @@ if (typeof window !== 'undefined') {
   hydrate((
     <Provider store={store}>
       <Router>       
-        <App>
-          <Switch>
-            <Route exact path="/" component={Search} />
-            <Route path="/search">
-              <Search>
-                <Route component={SearchResults}/>
-              </Search>
-            </Route>
-            <Route path="/movie/:id" component={FilmPage} />
-            <Route path="*" component={PageNotFound} />
-          </Switch>
-        </App>
+        <Routers/>
       </Router>
     </Provider>
     ), document.getElementById('app')
