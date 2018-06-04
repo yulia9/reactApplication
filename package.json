@@ -8,8 +8,7 @@
     "prod": "webpack --config webpack.prod.js",
     "dev": "webpack --config webpack.dev.js",
     "start": "webpack-dev-server --open --config webpack.dev.js",
-    "ssr": "npm run dev && babel-node ./src/server",
-    "ssr2": "webpack --config server.production.js && babel-node src/server/index.js"
+    "ssr": "npm run dev && babel-node ./src/server"
   },
   "jest": {
     "verbose": true,
