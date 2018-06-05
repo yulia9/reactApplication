@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import rootReducer from './reducers';
 import thunk from 'redux-thunk';
 import App from './components/App';
+import { renderRoutes } from 'react-router-config';
 
 export function configureStore (initialState) {
   return createStore(rootReducer, initialState, applyMiddleware(thunk));
@@ -18,32 +19,34 @@ import FilmPage from './components/FilmPage';
 import { SearchResults } from './components/SearchResults'; 
 let store = {};
 
-export let Routers  = () => {
-  return (
-    <App>
-      <Switch>
-        <Route exact path="/" component={Search} />
-        <Route path="/search">
-          <Search>
-            <Route component={SearchResults}/>
-          </Search>
-        </Route>
-        <Route path="/movies/:id" component={FilmPage} />
-        <Route path="*" component={PageNotFound} />
-      </Switch>
-    </App>
-  )
-}
+export let routers = [
+  { 
+    path: "/",
+    exact: true,
+    component: Search
+  },
+  { 
+    path: "/search",
+    component: SearchResults
+  },
+  { 
+    path: "/movies/:id",
+    component: FilmPage
+  },
+  { 
+    path: "*",
+    component: PageNotFound
+  }
+];
 
 // Prevent this part from working when is running
 if (typeof window !== 'undefined') {
   store = configureStore(window.PRELOADED_STATE);
-  delete window.PRELOADED_STATE;
-
+console.log('window.PRELOADED_STATE', window.PRELOADED_STATE)
   hydrate((
     <Provider store={store}>
       <Router>       
-        <Routers/>
+        {renderRoutes(routers)}
       </Router>
     </Provider>
     ), document.getElementById('app')

@@ -5,7 +5,8 @@ import { storage } from '../storage';
 const initialState = {
   data: [],
   loading: false,
-  error: null
+  error: null,
+  movie: ''
 };
 
 const data = (state = initialState, action) => {

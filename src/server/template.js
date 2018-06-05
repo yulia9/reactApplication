@@ -2,7 +2,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { configureStore, Routers } from '../index';
+import { matchRoutes, renderRoutes } from 'react-router-config';
+import { configureStore, routers } from '../index';
 import App from '../components/App';
 import Header from '../components/Header';
 import Search from '../components/Search';
@@ -30,20 +31,37 @@ function renderPage (html, preloadedState) {
   `
 }
 function handleRender (req, res) {
-  const context = {};
+  console.log(req.url);
+
   const store = configureStore();
+  const branch = matchRoutes(routers, req.url);
 
-  const app = (
-    <Provider store={store}>
-      <StaticRouter location={req.url} context={context}>
-        <Routers/>
-      </StaticRouter>
-    </Provider>
-  );
+  const promises = branch.map(({ route, match }) => {
+    const { fetchRequest } = route.component;
 
-  const html = renderToString(app);
-  const state = store.getState();
-  res.send(renderPage(html, state));
+    if (!(fetchRequest instanceof Function)) {
+      return Promise.resolve(null);
+    }
+
+    return fetchRequest(store.dispatch, req.url)
+  })
+
+  return Promise.all(promises)
+    .then(() => {
+      const state = store.getState();
+      const context = state;
+      const app = (
+        <Provider store={store}>
+          <StaticRouter location={req.url} context={context}>
+            {renderRoutes(routers)}
+          </StaticRouter>
+        </Provider>
+      );
+
+      const html = renderToString(app);
+      
+      res.send(renderPage(html, state));
+    })
 }
 
 export default handleRender;

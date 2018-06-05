@@ -16,14 +16,25 @@ let params = {
 export default class FilmPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {movie: ''}
+   
+    if (this.props.staticContext && this.props.staticContext.dataFetch) {
+       console.log('$$$props', this.props.staticContext.dataFetch.movie)
+    }
+    this.state = { movie: this.props.staticContext && 
+      this.props.staticContext.dataFetch ? 
+      this.props.staticContext.dataFetch.movie : store.getState().dataFetch.movie};
+    this.url = urlForMovieRequest + this.props.location.pathname;
+  }
+
+  static fetchRequest(dispatch, url) {
+    return dispatch(fetchData(urlForMovieRequest + url, true))
   }
 
   componentDidMount() {
     let component = this;
-    store.dispatch(fetchData(urlForMovieRequest + component.props.location.pathname, true))
+    store.dispatch(fetchData(component.url, true))
     .then(function() {
-      let movie = store.getState().dataFetch.movie ? store.getState().dataFetch.movie : this.state.movie;
+      let movie =  store.getState().dataFetch ? store.getState().dataFetch.movie : this.state.movie;
       component.setState({movie: movie}); 
     })
   }
@@ -36,7 +47,6 @@ export default class FilmPage extends React.Component {
         </Link>
         <Movie description={this.state.movie.overview} data={this.state.movie} imgParams={params}/>
         <hr/>
-        <SearchResults/>
       </div>
     ) : <Warning message='Nothing was found'/>
   }

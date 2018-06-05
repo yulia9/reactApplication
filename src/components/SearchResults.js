@@ -5,7 +5,6 @@ import { store } from '../index';
 import { storage } from '../storage';
 import { updateData } from '../actions/dataActions';
 
-
 export function SearchResults(props) {
   let params = {
     width: 200,
@@ -26,7 +25,7 @@ export function SearchResults(props) {
   return (
     <ul className="searchResults"> {results.length ? results.map(n => 
       <Link key={n.id} 
-          to={{pathname: `/movie/${n.id}`, state: {movie: n}}}>
+          to={{pathname: `/movies/${n.id}`, state: {movie: n}}}>
         <li className="movieBlock">
           <Movie data={n} imgParams={params}></Movie>
         </li>

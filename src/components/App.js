@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from './Header';
 import Search from './Search';
 import ErrorBoundary from './ErrorBoundary';
+import 'isomorphic-fetch';
 
 const AppParams = {
   title: 'netflixroulettes',
