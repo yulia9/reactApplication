@@ -18,6 +18,8 @@ function renderPage (html, preloadedState) {
     <title>App</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
   </head>
   <body>
     <div id="app"> ${html} </div>
@@ -32,6 +34,8 @@ function renderPage (html, preloadedState) {
 function handleRender (req, res) {
   const context = {};
   const store = configureStore();
+
+  console.log(req.url)
 
   const app = (
     <Provider store={store}>

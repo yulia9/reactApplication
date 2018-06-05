@@ -26,7 +26,7 @@ export function SearchResults(props) {
   return (
     <ul className="searchResults"> {results.length ? results.map(n => 
       <Link key={n.id} 
-          to={{pathname: `/movie/${n.id}`, state: {movie: n}}}>
+          to={{pathname: `/movies/${n.id}`, state: {movie: n}}}>
         <li className="movieBlock">
           <Movie data={n} imgParams={params}></Movie>
         </li>
