@@ -19,6 +19,8 @@ function renderPage (html, preloadedState) {
     <title>App</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
   </head>
   <body>
     <div id="app"> ${html} </div>
@@ -58,10 +60,17 @@ function handleRender (req, res) {
         </Provider>
       );
 
-      const html = renderToString(app);
-      
-      res.send(renderPage(html, state));
-    })
+    const app = (
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <Routers/>
+        </StaticRouter>
+      </Provider>
+    );
+
+    const html = renderToString(app);
+    const state = store.getState();
+    res.send(renderPage(html, state));
 }
 
 export default handleRender;
