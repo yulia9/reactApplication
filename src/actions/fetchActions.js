@@ -13,7 +13,7 @@ const fetchBegin = () => ({
 
 const fetchSuccess = (data, oneMovie) => ({
   type: FETCH_STATES.FETCH_SUCCESS,
-  data: !oneMovie ? { data } : '',
+  data: !oneMovie ? data : '',
   movie: oneMovie ? { data } : ''
 });
 

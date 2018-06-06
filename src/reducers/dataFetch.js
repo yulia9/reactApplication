@@ -15,7 +15,7 @@ const data = (state = initialState, action) => {
       return Object.assign({}, state, {
           data: [],
           loading: true,
-          movie: {}
+          movie: ''
         })
       
     case FETCH_STATES.FETCH_SUCCESS:
@@ -32,7 +32,12 @@ const data = (state = initialState, action) => {
     case DATA_UPDATES.DATA_UPDATE:
       return Object.assign({}, state, {
           data: action.data,
-          loading: false
+          loading: false,
+          movie: action.movie
+        })
+    case DATA_UPDATES.UPDATE_MOVIE:
+      return Object.assign({}, state, {
+          movie: action.movie
         })
     case DATA_UPDATES.DATA_FILTER:
       return Object.assign({}, state, {

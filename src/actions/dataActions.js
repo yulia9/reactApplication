@@ -4,19 +4,27 @@ export const DATA_UPDATES = {
   DATA_UPDATE: 'DATA_UPDATE',
   DATA_SORT: 'DATA_SORT',
   DATA_FILTER: 'DATA_FILTER',
+  UPDATE_MOVIE: 'UPDATE_MOVIE'
 };
 
-export function updateData(data, storageId) {
-  storage.set(data, storageId);
+export function updateData(data) {
 
   return {
   	type: DATA_UPDATES.DATA_UPDATE,
-    data: data
+    data: data,
   }
 }
 
-export function filterData(data, filterBy, searchText, storageId) {
-  let arr;
+export function updateMovie(movie) {
+
+  return {
+    type: DATA_UPDATES.UPDATE_MOVIE,
+    movie: movie,
+  }
+}
+
+export function filterData(data, filterBy, searchText) {
+  let arr = data;
   let filterOpts = {
     title: 'title',
     genre: 'genre'
@@ -33,17 +41,16 @@ export function filterData(data, filterBy, searchText, storageId) {
       return genres.length > 0;
     })
   }
-  storage.set(data, storageId);
   return {
   	type: DATA_UPDATES.DATA_FILTER,
     data: arr
   }
 }
 
-export function sortData(data, sortBy, storageId) {
+export function sortData(data, sortBy) {
   let arr = data.sort((a, b) => {
   	return b[sortBy] - a[sortBy];	
   })
 
-  return updateData(arr, storageId);
+  return updateData(arr);
 }

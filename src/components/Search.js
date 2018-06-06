@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SearchResults } from './SearchResults';
-import ResultsCount from './ResultsCount';
 import Warning from './Warning';
 import Sort from './Sort';
 import RadioButtons from './RadioButtons';
@@ -50,6 +49,8 @@ class Search extends Component {
 
     this.updateInputVal = this.updateInputVal.bind(this);
     this.startSearch = this.startSearch.bind(this);
+    this.searchValue = 'default';
+    this.checked = 'all';
   }
   
   updateInputVal(e) {
@@ -58,7 +59,6 @@ class Search extends Component {
   }
 
   startSearch(e, history) {
-    this.storageId = Date.now();
 
     let component = this;
     e.preventDefault();
@@ -68,38 +68,22 @@ class Search extends Component {
       component.props.dispatch(updateData([]));
       return;
     } else {
+      this.searchValue = this.state.inputVal;
       this.setState({warning:''});
     }
 
-    component.props.dispatch(fetchData(SearchParams.urlSearchByTitle + this.state.inputVal))
-      .then(function(response) {
-
-        let arr = [];
-        if (response) {
-          response.map((n, i) => {
-            let date = new Date(n.release_date).getFullYear();
-            arr.push(n);
-            arr[i].release_date = date;
-          })
-        }
-        component.props.dispatch(updateData(arr));
-
-        component.searchVals.map(n => {
-          if (!!n.checked && n.name !== 'all') {
-            component.props.dispatch(filterData(component.props.data, n.name, component.state.inputVal.toLowerCase()));
-          } 
-        })
-        component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
-        component.setState({inputVal: ''});
-      })
+    component.searchVals.map(n => {
+      if (!!n.checked) {
+          component.checked = n.name;
+        } 
+    })
+    component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
+    component.setState({inputVal: ''});
   }
 
   sortFilms(n) {
-    let data = this.props.data;
-    let storageId = window.encodeURIComponent(`Search=${Date.now()}Query`);
     this.props.dispatch(updateData([]));
-    this.props.dispatch(sortData(data, n, storageId));
-    this.props.history.push(`/search?${storageId}`);
+    this.props.history.push(`/search/${this.searchValue.toLowerCase()}&${this.checked}&${n}`);
   }
 
   inputChanged(n) {
@@ -122,9 +106,7 @@ class Search extends Component {
      
         <Warning message={this.state.warning}/>
         <div className="sortContainer">
-          <ResultsCount count={this.props.data.length}/>
-          <Sort show={!!this.props.data.length}
-                sortFilms={this.sortFilms.bind(this)}
+          <Sort sortFilms={this.sortFilms.bind(this)}
                 sortVals={this.sortVals}
                 />
         </div>

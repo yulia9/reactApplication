@@ -14,6 +14,7 @@ export function configureStore (initialState) {
 
 import PageNotFound from './components/PageNotFound';
 import Search from './components/Search';
+import Welcome from './components/Welcome';
 import Header from './components/Header';
 import FilmPage from './components/FilmPage'; 
 import { SearchResults } from './components/SearchResults'; 
@@ -23,10 +24,10 @@ export let routers = [
   { 
     path: "/",
     exact: true,
-    component: Search
+    component: Welcome
   },
   { 
-    path: "/search",
+    path: "/search/:value&:filter&:sort",
     component: SearchResults
   },
   { 
@@ -41,17 +42,21 @@ export let routers = [
 
 // Prevent this part from working when is running
 if (typeof window !== 'undefined') {
-  store = configureStore(window.PRELOADED_STATE);
-console.log('window.PRELOADED_STATE', window.PRELOADED_STATE)
-  hydrate((
-    <Provider store={store}>
-      <Router>       
-        {renderRoutes(routers)}
-      </Router>
-    </Provider>
-    ), document.getElementById('app')
-  )
 
+    store = configureStore(window.PRELOADED_STATE);
+    delete window.PRELOADED_STATE;
+
+    hydrate((
+      <Provider store={store}>
+        <Router>
+          <App> 
+            <Search/>      
+            {renderRoutes(routers)}
+          </App>
+        </Router>
+      </Provider>
+      ), document.getElementById('app')
+    )
 }
 
 export { store };

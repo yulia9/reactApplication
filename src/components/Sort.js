@@ -30,13 +30,11 @@ export default class Sort extends Component {
   }
 
   render() {
-    return this.props.show ?
-    (<div className="sort">
+    return (<div className="sort">
       <button className="btn" onClick={this.clickSort.bind(this)}> SORT BY </button>
       <RadioButtons name='sortMovies'
                    options={this.sortOptions}
                    inputChanged={this.inputChanged.bind(this)}/>
-    </div>) :
-    null;
+    </div>) 
   }
 }
