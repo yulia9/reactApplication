@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import css from '../styles/main.css';
 import Header from './Header';
 import Search from './Search';
@@ -11,16 +12,16 @@ const AppParams = {
 };
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
   render() {
     return (
       <div className="App">
         <ErrorBoundary>
           <Header title={AppParams.title} searchTitle={AppParams.searchTitle}/>
-          <Search/>
         </ErrorBoundary>
+        { this.props.children }
       </div>
     );
   }

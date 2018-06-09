@@ -6,8 +6,8 @@ export const DATA_UPDATES = {
   DATA_FILTER: 'DATA_FILTER',
 };
 
-export function updateData(data) {
-  storage.set(data);
+export function updateData(data, storageId) {
+  storage.set(data, storageId);
 
   return {
   	type: DATA_UPDATES.DATA_UPDATE,
@@ -15,7 +15,7 @@ export function updateData(data) {
   }
 }
 
-export function filterData(data, filterBy, searchText) {
+export function filterData(data, filterBy, searchText, storageId) {
   let arr;
   let filterOpts = {
     title: 'title',
@@ -33,17 +33,17 @@ export function filterData(data, filterBy, searchText) {
       return genres.length > 0;
     })
   }
-  storage.set(data);
+  storage.set(data, storageId);
   return {
   	type: DATA_UPDATES.DATA_FILTER,
     data: arr
   }
 }
 
-export function sortData(data, sortBy) {
+export function sortData(data, sortBy, storageId) {
   let arr = data.sort((a, b) => {
   	return b[sortBy] - a[sortBy];	
   })
 
-  return updateData(arr);
+  return updateData(arr, storageId);
 }

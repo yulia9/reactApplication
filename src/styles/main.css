@@ -194,3 +194,9 @@ a:hover {
   top: 40px; 
   transition: all 0.3s ease-in-out; 
 }
+
+.filmPageSearch {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
