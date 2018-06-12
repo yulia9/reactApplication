@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "prod": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --open --config webpack.dev.js"
+    "dev": "webpack --config webpack.dev.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "ssr": "npm run dev && babel-node ./src/server"
   },
   "jest": {
     "verbose": true,
@@ -15,9 +17,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "cross-env": "^5.1.6",
     "css-loader": "^0.28.11",
     "cypress": "^2.1.0",
     "enzyme": "^3.3.0",
@@ -25,21 +31,26 @@
     "express": "^4.16.3",
     "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^3.2.0",
+    "isomorphic-fetch": "^2.2.1",
     "jest": "^22.4.3",
+    "memory-fs": "^0.4.1",
     "node-sass": "^4.8.3",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
+    "react-router-config": "^1.0.0-beta.4",
     "react-router-dom": "^4.2.2",
     "react-test-renderer": "^16.3.2",
     "redux": "^4.0.0",
     "redux-mock-store": "^1.5.1",
     "redux-thunk": "^2.2.0",
+    "require-from-string": "^2.0.2",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
     "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.15"
+    "webpack-cli": "^2.0.15",
+    "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
     "babel-jest": "^22.4.3",
