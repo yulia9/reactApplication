@@ -6,7 +6,11 @@
   "scripts": {
     "test": "jest",
     "prod": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --open --config webpack.dev.js"
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "lint": "eslint ./ --cache --ignore-pattern .gitignore --fix",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "flow": "flow"
   },
   "jest": {
     "verbose": true,
@@ -25,10 +29,14 @@
     "express": "^4.16.3",
     "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^3.2.0",
+    "immutable": "^3.8.2",
     "jest": "^22.4.3",
+    "jss": "^9.8.3",
+    "jss-preset-default": "^4.5.0",
     "node-sass": "^4.8.3",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-jss": "^8.5.1",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -42,10 +50,24 @@
     "webpack-cli": "^2.0.15"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.4.7",
+    "@storybook/addon-links": "^3.4.7",
+    "@storybook/addons": "^3.4.7",
+    "@storybook/react": "^3.4.7",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.3",
     "babel-jest": "^22.4.3",
     "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
+    "babel-runtime": "^6.26.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.9.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "flow-bin": "^0.74.0",
     "regenerator-runtime": "^0.11.1",
     "webpack-cli": "^2.0.15",
     "webpack-dev-server": "^3.1.3"

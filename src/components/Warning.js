@@ -5,6 +5,6 @@ export default function Warning(props) {
     <div>
       <p className="warning"> {props.c} </p>
     </div>
-  )
+  );
 }
 

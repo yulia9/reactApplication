@@ -5,5 +5,5 @@ export default function (props) {
     <header>
       <h2 className="headerTitle"> {props.title} </h2>
     </header>
-  )
+  );
 }

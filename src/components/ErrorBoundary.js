@@ -4,19 +4,19 @@ import Warning from './Warning';
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      error: null, 
+    this.state = {
+      error: null,
       errorInfo: null,
       warning1: 'Ooops.. Something went wrong...',
-      warning2: 'Try to visit the site later'
+      warning2: 'Try to visit the site later',
     };
   }
 
   componentDidCatch(error, errorInfo) {
     this.setState({
-      error: error,
-      errorInfo: errorInfo
-    })
+      error,
+      errorInfo,
+    });
     console.log(`Error: ${error}`);
     console.log(`Error info: ${errorInfo.componentStack}`);
   }
@@ -31,5 +31,5 @@ export default class ErrorBoundary extends Component {
       );
     }
     return this.props.children;
-  }  
+  }
 }

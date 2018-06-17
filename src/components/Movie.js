@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from './Image';
 
-export function Movie({imgParams, data, description}) {
+export function Movie({ imgParams, data, description }) {
   return (
     <div>
       <Image width={imgParams.width}
@@ -14,11 +14,11 @@ export function Movie({imgParams, data, description}) {
       <p>{makeString(data.genres)}</p>
       <p> {description} </p>
     </div>
-  )
+  );
 
   function makeString(arr) {
     return arr.length && arr.length > 1 ?
-        arr.reduce((a, b) => `${a} & ${b}`) :
-        (arr.length[0] || '')
+      arr.reduce((a, b) => `${a} & ${b}`) :
+      (arr.length[0] || '');
   }
 }
