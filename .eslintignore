@@ -1,0 +1,9 @@
+build
+node_modules
+coverage
+.idea
+build
+src/tests
+cypress
+src/actions/index.test.js
+src/reducers/index.test.js

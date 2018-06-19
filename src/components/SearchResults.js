@@ -7,15 +7,15 @@ import { updateData } from '../actions/dataActions';
 
 
 export function SearchResults(props) {
-  let params = {
+  const params = {
     width: 200,
     height: 'auto',
-  }
+  };
 
   let results = store.getState().dataFetch.data;
-  
-  let storageId = props.location && props.location.search ? 
-  props.location.search.slice(1) : '';
+
+  const storageId = props.location && props.location.search ?
+    props.location.search.slice(1) : '';
 
   results = results.length ? results : storage.get(storageId);
 
@@ -24,14 +24,14 @@ export function SearchResults(props) {
   }
 
   return (
-    <ul className="searchResults"> {results.length ? results.map(n => 
-      <Link key={n.id} 
-          to={{pathname: `/movie/${n.id}`, state: {movie: n}}}>
+    <ul className="searchResults"> {results.length ? results.map(n =>
+      <Link key={n.id}
+          to={{ pathname: `/movie/${n.id}`, state: { movie: n } }}>
         <li className="movieBlock">
           <Movie data={n} imgParams={params}></Movie>
         </li>
-      </Link>) : []} 
+      </Link>) : []}
       {props.children}
     </ul>
-  )
+  );
 }
