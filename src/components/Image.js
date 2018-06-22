@@ -1,6 +1,14 @@
+// @flow
 import React from 'react';
 
-export default function Image(props) {
+type imageProps = {
+    source: number;
+    width: number;
+    height: string;
+    title:string;
+};
+
+export default function Image(props: imageProps) {
   return (
     <div>
       <img src={props.source}

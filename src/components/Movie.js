@@ -1,7 +1,25 @@
+// @flow
 import React from 'react';
 import Image from './Image';
 
-export function Movie({ imgParams, data, description }) {
+type movieProps = {
+  data: {
+    vote_count: number,
+    release_date: number,
+    poster_path: number,
+    title: string,
+    genres: Array <string>,
+  };
+  imgParams: {
+    width: number,
+    height: string,
+  };
+  description: string,
+};
+
+export function Movie(props: movieProps) {
+  let {imgParams, data, description} = props;
+
   return (
     <div>
       <Image width={imgParams.width}

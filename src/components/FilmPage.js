@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom';
 import { SearchResults } from './SearchResults';
 import { updateData } from '../actions/dataActions';
 
-
-export default function (props) {
+export default function (props: filmPageProps) {
   const params = {
     width: 400,
     height: 'auto',

@@ -7,6 +7,7 @@ import RadioButtons from './RadioButtons';
 import { updateData, filterData, sortData } from '../actions/dataActions';
 import { fetchData } from '../actions/fetchActions';
 import { withRouter } from 'react-router';
+import { createSelector } from 'reselect';
 
 const SearchParams = {
   defaultInputVal: 'Want to watch...',
@@ -134,7 +135,12 @@ class Search extends Component {
 }
 
 function mapStateToProps(state) {
-  return state.dataFetch;
+
+  const getData = createSelector(() => state.dataFetch,
+    data => data
+  );
+
+  return getData();
 }
 
 

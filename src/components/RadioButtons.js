@@ -1,7 +1,18 @@
+// @flow
 import React, { Component } from 'react';
 
-export default class RadioButtons extends Component {
-  constructor(props) {
+type State = {
+  defaultCheck: string,
+};
+
+type Props = {
+  name: string,
+  options: Array<mixed>,
+  inputChanged: Function
+};
+
+export default class RadioButtons extends Component<Props, State> {
+  constructor(props: any) {
     super(props);
     this.state = {
       defaultCheck: 'opt0',
@@ -9,7 +20,7 @@ export default class RadioButtons extends Component {
     this.optionChanged = this.optionChanged.bind(this);
   }
 
-  optionChanged(e, n) {
+  optionChanged(e: {target: {value: string}}, n: string) {
     this.setState({ defaultCheck: e.target.value });
     this.props.inputChanged(n);
   }
