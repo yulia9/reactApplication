@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import css from '../styles/main.css';
 import Header from './Header';
-import Search from './Search';
 import ErrorBoundary from './ErrorBoundary';
+
+import jss from 'jss';
+import injectSheet from 'react-jss';
+
+const styles = {
+  App: {
+    minWidth: '550px'
+  }
+};
 
 const AppParams = {
   title: 'netflixroulettes',
   homepageUrl: '/',
-  searchTitle: 'FIND YOUR MOVIE'
+  searchTitle: 'FIND YOUR MOVIE',
 };
 
 class App extends Component {
@@ -17,7 +24,7 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
+      <div className={this.props.classes.App}>
         <ErrorBoundary>
           <Header title={AppParams.title} searchTitle={AppParams.searchTitle}/>
         </ErrorBoundary>
@@ -27,4 +34,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default injectSheet(styles)(App);

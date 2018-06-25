@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SearchResults } from './SearchResults';
 import ResultsCount from './ResultsCount';
 import Warning from './Warning';
 import Sort from './Sort';
@@ -8,6 +7,7 @@ import RadioButtons from './RadioButtons';
 import { updateData, filterData, sortData } from '../actions/dataActions';
 import { fetchData } from '../actions/fetchActions';
 import { withRouter } from 'react-router';
+import { createSelector } from 'reselect';
 
 const SearchParams = {
   defaultInputVal: 'Want to watch...',
@@ -16,96 +16,95 @@ const SearchParams = {
 };
 
 class Search extends Component {
-  constructor({props}) {
+  constructor({ props }) {
     super(props);
     this.state = {
       inputVal: '',
-      warning: ''
+      warning: '',
     };
     this.sortVals = [
-    {
-      jsonName: 'release_date',
-      name:'release date',
-      checked: true
-    },
-    {
-      jsonName: 'vote_count',
-      name: 'rating',
-    }];
+      {
+        jsonName: 'release_date',
+        name: 'release date',
+        checked: true,
+      },
+      {
+        jsonName: 'vote_count',
+        name: 'rating',
+      }];
 
     this.searchVals = [
-    {
-      jsonName: 'all',
-      name: 'all',
-      checked: true
-    },
-    {
-      jsonName: 'title',
-      name: 'title'
-    },
-    {
-      jsonName: 'genres',
-      name: 'genre'
-    }];
+      {
+        jsonName: 'all',
+        name: 'all',
+        checked: true,
+      },
+      {
+        jsonName: 'title',
+        name: 'title',
+      },
+      {
+        jsonName: 'genres',
+        name: 'genre',
+      }];
 
     this.updateInputVal = this.updateInputVal.bind(this);
     this.startSearch = this.startSearch.bind(this);
   }
-  
+
   updateInputVal(e) {
-    this.setState({inputVal: e.target.value});
+    this.setState({ inputVal: e.target.value });
     return this.state.inputVal;
   }
 
   startSearch(e, history) {
     this.storageId = Date.now();
 
-    let component = this;
+    const component = this;
     e.preventDefault();
 
     if (!this.state.inputVal) {
-      this.setState({warning: SearchParams.warningText});
+      this.setState({ warning: SearchParams.warningText });
       component.props.dispatch(updateData([]));
       return;
-    } else {
-      this.setState({warning:''});
     }
+    this.setState({ warning: '' });
+
 
     component.props.dispatch(fetchData(SearchParams.urlSearchByTitle + this.state.inputVal))
-      .then(function(response) {
-
-        let arr = [];
+      .then((response) => {
+        const arr = [];
         if (response) {
           response.map((n, i) => {
-            let date = new Date(n.release_date).getFullYear();
+            const date = new Date(n.release_date).getFullYear();
             arr.push(n);
             arr[i].release_date = date;
-          })
+          });
         }
         component.props.dispatch(updateData(arr));
 
-        component.searchVals.map(n => {
+        component.searchVals.map((n) => {
           if (!!n.checked && n.name !== 'all') {
             component.props.dispatch(filterData(component.props.data, n.name, component.state.inputVal.toLowerCase()));
-          } 
-        })
+          }
+        });
         component.sortFilms(component.sortVals.filter(n => n.checked === true)[0].jsonName);
-        component.setState({inputVal: ''});
-      })
+        component.setState({ inputVal: '' });
+      });
   }
 
   sortFilms(n) {
-    let data = this.props.data;
-    let storageId = window.encodeURIComponent(`Search=${Date.now()}Query`);
+    const data = this.props.data;
+    const storageId = window.encodeURIComponent(`Search=${Date.now()}Query`);
     this.props.dispatch(updateData([]));
     this.props.dispatch(sortData(data, n, storageId));
     this.props.history.push(`/search?${storageId}`);
   }
 
   inputChanged(n) {
-    this.searchVals.map(l => {
+    this.searchVals.map((l) => {
       l.name === n.name ? l.checked = true : l.checked = false;
-    })
+    });
   }
 
   render() {
@@ -119,7 +118,7 @@ class Search extends Component {
             inputChanged={this.inputChanged.bind(this)}/>
           <input className="searchInput" type="text" value={this.state.inputVal} onChange={this.updateInputVal} placeholder={SearchParams.defaultInputVal}/>
         </form>
-     
+
         <Warning message={this.state.warning}/>
         <div className="sortContainer">
           <ResultsCount count={this.props.data.length}/>
@@ -133,11 +132,16 @@ class Search extends Component {
       </div>
     );
   }
-};
+}
 
 function mapStateToProps(state) {
-  return state.dataFetch;
-} 
+
+  const getData = createSelector(() => state.dataFetch,
+    data => data
+  );
+
+  return getData();
+}
 
 
 export default withRouter(connect(mapStateToProps)(Search));
